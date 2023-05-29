@@ -12,7 +12,8 @@ from utils import (
     sort_for_position,
     print_results,
     most_achievements,
-    validate_same_statistics
+    validate_same_statistics,
+    player_statistics_ranking
 )
 
 
@@ -171,7 +172,7 @@ def __main__():
                     "porcentaje_tiros_de_campo",
                 )
             case "23":
-                print("HOLA MIKE")
+                player_statistics_ranking(data_dream_team["jugadores"])
             case "s":
                 continue
             case _:

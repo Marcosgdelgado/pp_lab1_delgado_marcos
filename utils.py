@@ -395,3 +395,53 @@ def validate_same_statistics(player_list: list, statistics: str) -> list:
         if max_player["estadisticas"][statistics] == player["estadisticas"][statistics]:
             list_max_players.append(player)
     return list_max_players
+
+
+def player_statistics_ranking(player_list: list) -> None:
+    """Genera los rankings de puntos, rebotes, robos , asistencias y los exporta a un CSV.
+
+    Args:
+        player_list (list): Lista de diccionarios con datos de jugadores.
+    """
+    list_keys = ["puntos_totales", "rebotes_totales", "asistencias_totales", "robos_totales"]
+    for item in list_keys:
+        new_list = sort_players(player_list, "estadisticas", item, True, "des")
+        for index in range(len(new_list)):
+            for player in player_list:
+                if new_list[index]["nombre"] == player["nombre"]:
+                    player[item] = index+1
+                    break
+    export_ranking_to_csv(player_list)
+
+
+def export_ranking_to_csv(player_dict: dict) -> None:
+    """Función de uso interno para generar CSV con rankings de estadisticas.
+
+    Args:
+        player_dict (dict): Lista de diccionarios con datos de los jugadores
+    """
+    save_path = "./ranking_de_estadisticas.csv"
+    flag_firt_line = False
+    try:
+        for player in player_dict:
+            del player["logros"]
+            del player["estadisticas"]
+            del player["posicion"]
+            if not flag_firt_line:
+                with open(save_path, "w", encoding="utf-8") as csv:
+                    firts_line = ",".join(player.keys()) + "\n"
+                    csv.write(firts_line)
+                    flag_firt_line = True
+                    values = ",".join(str(valor) for valor in player.values()) + "\n"
+                    csv.write(values)
+            else:
+                with open(save_path, "r", encoding="utf-8") as csv:
+                    lineas = csv.readlines()
+                value_line = ",".join(str(valor) for valor in player.values()) + "\n"
+                lineas.append(value_line)
+                with open(save_path, "w", encoding="utf-8") as csv:
+                    csv.writelines(lineas)
+        print("¡Se genero el archivo CSV con exito!\n")
+    except Exception as error:
+        print("No se pudo generar el arhcivo CSV")
+        print(f"Se genero la siguiente excepcion: {error}")
