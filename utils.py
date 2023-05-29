@@ -64,8 +64,12 @@ def print_results(message: str, results: tuple[list, dict], staticals: str = "al
         if results != []:
             for dict_i in results:
                 print(f"{dict_i['nombre']}\t{dict_i['posicion']}")
-                if staticals != "all":
+                if staticals != "all" and staticals != "logros":
                     print(f"{str_staticals}: {dict_i['estadisticas'][staticals]}")
+                elif staticals == "logros":
+                    for logro in dict_i["logros"]:
+                        print(logro)
+                    print(f"Total de logros conseguidos: {len(dict_i['logros'])}")
                 else:
                     for key in dict_i["estadisticas"]:
                         print(
@@ -359,3 +363,35 @@ def sort_for_position(player_list: list, statistics_key: str) -> list:
     highest_statiscal = highest_statistical_value(player_list, statistics_key)
     sort_position = sort_players(highest_statiscal, "posicion")
     return sort_position
+
+
+def most_achievements(player_list: list) -> None:
+    """Calcula y muesta al jugador con más logros conseguidos.
+
+    Args:
+        player_list (list): Lista de diccionarios con datos de jugadores
+    """
+    max_logros = ["", 0]
+    for player in player_list:
+        if len(player["logros"]) > max_logros[1]:
+            max_logros[0] = [player]
+            max_logros[1] = len(player["logros"])
+    print_results("El jugador con más logros es:", max_logros[0], "logros")
+
+
+def validate_same_statistics(player_list: list, statistics: str) -> list:
+    """Valida jugadores que tienen la misma puntuación en X estadística.
+
+    Args:
+        player_list (list): Lista de diccionarios con datos de jugadores
+        statistics (str): Llave correspondiente al diccionario de estadisticas
+
+    Returns:
+        list: Lista de jugadores con mismo valor en X estadistica.
+    """
+    max_player = player_list[0]
+    list_max_players = [max_player]
+    for player in player_list[1:]:
+        if max_player["estadisticas"][statistics] == player["estadisticas"][statistics]:
+            list_max_players.append(player)
+    return list_max_players

@@ -11,6 +11,8 @@ from utils import (
     avr_points_without_worse_scorer,
     sort_for_position,
     print_results,
+    most_achievements,
+    validate_same_statistics
 )
 
 
@@ -50,6 +52,7 @@ def __main__():
                 firts_rebounds = sort_players(
                     data_dream_team["jugadores"], "estadisticas", "rebotes_totales", True, "des"
                 )
+                firts_rebounds = validate_same_statistics(firts_rebounds, "rebotes_totales")
                 print_results(
                     "El jugador con mayor rebotes capturados es:",
                     firts_rebounds[0],
@@ -63,6 +66,7 @@ def __main__():
                     True,
                     "des",
                 )
+                firts_shot = validate_same_statistics(firts_shot, "porcentaje_tiros_de_campo")
                 print_results(
                     f"El jugador con mayor % de tiros de campo es:",
                     firts_shot[0],
@@ -72,6 +76,7 @@ def __main__():
                 firts_assistance = sort_players(
                     data_dream_team["jugadores"], "estadisticas", "asistencias_totales", True, "des"
                 )
+                firts_assistance = validate_same_statistics(firts_assistance, "asistencias_totales")
                 print_results(
                     "El jugador con mayor cantidad de asistencias es:",
                     firts_assistance[0],
@@ -108,6 +113,7 @@ def __main__():
                 firts_steals = sort_players(
                     data_dream_team["jugadores"], "estadisticas", "robos_totales", True, "des"
                 )
+                firts_steals = validate_same_statistics(firts_steals, "robos_totales")
                 print_results(
                     "El jugador con mayor cantidad de robos es:", firts_steals[0], "robos_totales"
                 )
@@ -115,6 +121,7 @@ def __main__():
                 firts_blocks = sort_players(
                     data_dream_team["jugadores"], "estadisticas", "bloqueos_totales", True, "des"
                 )
+                firts_blocks = validate_same_statistics(firts_blocks, "bloqueos_totales")
                 print_results(
                     "El jugador con mayor cantidad de bloqueos es:",
                     firts_blocks[0],
@@ -136,7 +143,7 @@ def __main__():
                     f"{avr_points}",
                 )
             case "17":
-                print(option)
+                most_achievements(data_dream_team["jugadores"])
             case "18":
                 three_point_shot = highest_statistical_value(
                     data_dream_team["jugadores"], "porcentaje_tiros_triples"
@@ -147,10 +154,10 @@ def __main__():
                     "porcentaje_tiros_triples",
                 )
             case "19":
-                # TODO: CUIDADO CON JUGADORES QUE TENGAN LOS MISMOS NUMEROS John Stockton y Karl Malone tienen las mismas temporadas
                 firts_seasons = sort_players(
                     data_dream_team["jugadores"], "estadisticas", "temporadas", True, "des"
                 )
+                firts_seasons = validate_same_statistics(firts_seasons, "temporadas")
                 print_results(
                     "El jugador con mayor cantidad de temporadas es:", firts_seasons, "temporadas"
                 )
